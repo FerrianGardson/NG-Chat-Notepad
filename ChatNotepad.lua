@@ -55,10 +55,9 @@ local function EditBoxSend()
     local quotesleft = dash:gsub("%<%<", "«")
     local quotesright = quotesleft:gsub("%>%>", "»")
 
-
-        if (quotesright:sub(-1) ~= "." and quotesright:sub(-1) ~= "?" and quotesright:sub(-1) ~= "!") then
-            quotesright = quotesright .. "."
-        end
+    if (quotesright:sub(-1) ~= "." and quotesright:sub(-1) ~= "?" and quotesright:sub(-1) ~= "!") then
+        quotesright = quotesright .. "."
+    end
 
     if (selectedValue == "SAY") then
         SendChatMessage(quotesright, selectedValue)
@@ -186,10 +185,9 @@ end ]]
 function Talk()
     if (isTalkBtn:GetChecked()) then
         SendChatMessage(".mod st 1")
-    end
---[[     else
+    else
         SendChatMessage(".mod st 0")
-    end ]]
+    end
 end
 
 -- Toggler
@@ -213,11 +211,11 @@ end
 -- Точконатор
 
 local function isDotChecker()
-        local text = TextField.ScrollFrame.EditBox:GetText()
-        if (string.sub(text, -1) ~= "." or string.sub(text, -1) ~= "?" or string.sub(text, -1) ~= "!") then
-            TextField.ScrollFrame.EditBox:SetText(text .. ".")
-            TextField.ScrollFrame.EditBox:ClearFocus()
-        end
+    local text = TextField.ScrollFrame.EditBox:GetText()
+    if (string.sub(text, -1) ~= "." or string.sub(text, -1) ~= "?" or string.sub(text, -1) ~= "!") then
+        TextField.ScrollFrame.EditBox:SetText(text .. ".")
+        TextField.ScrollFrame.EditBox:ClearFocus()
+    end
 
 end
 
