@@ -7,42 +7,6 @@
  @    @.   @@@   @@  (@      ,@     @@      @@    @@*  .@       @.    @@       @
  
 --]] -- Основное окно 1234
-
--- Enter/Отправить
-
-local function EditBoxSend()
-    local TextMessage = TextField.ScrollFrame.EditBox:GetText()
-    if (TextMessage == "") then
-        print("|cff00488c[ChatNotepad]:|r Введите сообщение.")
-        return
-    end
-
-    local selectedValue = ChatNotepadFrameDropDownMenu.selectedValue
-    local dash = TextMessage:gsub("%-%-", "—")
-    local quotesleft = dash:gsub("%<%<", "«")
-    local quotesright = quotesleft:gsub("%>%>", "»")
-
-    if (quotesright:sub(-1) ~= "." and quotesright:sub(-1) ~= "?" and quotesright:sub(-1) ~= "!") then
-        quotesright = quotesright .. "."
-    end
-
-    if (selectedValue == "SAY") then
-        SendChatMessage(quotesright, selectedValue)
-    elseif (selectedValue == "YELL") then
-        SendChatMessage(quotesright, selectedValue)
-    elseif (selectedValue == "EMOTE") then
-        SendChatMessage(quotesright, selectedValue)
-    elseif (selectedValue == "RAID") then
-        SendChatMessage(quotesright, selectedValue)
-    elseif (selectedValue == "PARTY") then
-        SendChatMessage(quotesright, selectedValue)
-    elseif (selectedValue == "GUILD") then
-        SendChatMessage(quotesright, selectedValue)
-    end
-    TextField.ScrollFrame.EditBox:SetText("")
-    CloseNotePad()
-end
-
 local ChatNotepadFrame = CreateFrame("Frame", "ChatNotepadFrame", UIParent)
 ChatNotepadFrame:SetSize(400, 400)
 ChatNotepadFrame:SetPoint("CENTER", 0, 0)
@@ -77,6 +41,40 @@ texture:SetAllPoints(ChatNotepadFrame)
 
 ChatNotepadFrame:Hide()
 
+-- Enter/Отправить
+
+local function EditBoxSend()
+    local TextMessage = TextField.ScrollFrame.EditBox:GetText()
+    if (TextMessage == "") then
+        print("|cff00488c[ChatNotepad]:|r Введите сообщение.")
+        return
+    end
+
+    local selectedValue = ChatNotepadFrameDropDownMenu.selectedValue
+    local dash = TextMessage:gsub("%-%-", "—")
+    local quotesleft = dash:gsub("%<%<", "«")
+    local quotesright = quotesleft:gsub("%>%>", "»")
+
+
+        if (quotesright:sub(-1) ~= "." and quotesright:sub(-1) ~= "?" and quotesright:sub(-1) ~= "!") then
+            quotesright = quotesright .. "."
+        end
+
+    if (selectedValue == "SAY") then
+        SendChatMessage(quotesright, selectedValue)
+    elseif (selectedValue == "EMOTE") then
+        SendChatMessage(quotesright, selectedValue)
+    elseif (selectedValue == "RAID") then
+        SendChatMessage(quotesright, selectedValue)
+    elseif (selectedValue == "PARTY") then
+        SendChatMessage(quotesright, selectedValue)
+    elseif (selectedValue == "GUILD") then
+        SendChatMessage(quotesright, selectedValue)
+    end
+    TextField.ScrollFrame.EditBox:SetText("")
+    CloseNotePad()
+end
+
 -- Кнопка отправить
 
 local UploadBtn = CreateFrame("BUTTON", "UploadBtn", ChatNotepadFrame, "UIPanelButtonTemplate");
@@ -86,8 +84,6 @@ UploadBtn:SetText("Отправить")
 UploadBtn:SetPoint("BOTTOMRIGHT", ChatNotepadFrame, -10, 10)
 UploadBtn:SetFrameLevel(3)
 UploadBtn:SetScript("OnClick", EditBoxSend)
-
-
 
 -- Название
 
@@ -191,7 +187,7 @@ function Talk()
     if (isTalkBtn:GetChecked()) then
         SendChatMessage(".mod st 1")
     end
-    --[[     else
+--[[     else
         SendChatMessage(".mod st 0")
     end ]]
 end
@@ -217,11 +213,11 @@ end
 -- Точконатор
 
 local function isDotChecker()
-    local text = TextField.ScrollFrame.EditBox:GetText()
-    if (string.sub(text, -1) ~= "." or string.sub(text, -1) ~= "?" or string.sub(text, -1) ~= "!") then
-        TextField.ScrollFrame.EditBox:SetText(text .. ".")
-        TextField.ScrollFrame.EditBox:ClearFocus()
-    end
+        local text = TextField.ScrollFrame.EditBox:GetText()
+        if (string.sub(text, -1) ~= "." or string.sub(text, -1) ~= "?" or string.sub(text, -1) ~= "!") then
+            TextField.ScrollFrame.EditBox:SetText(text .. ".")
+            TextField.ScrollFrame.EditBox:ClearFocus()
+        end
 
 end
 
