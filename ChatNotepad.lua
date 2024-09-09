@@ -184,9 +184,9 @@ end ]]
 
 function Talk()
     if (isTalkBtn:GetChecked()) then
-        SendChatMessage(".mod st 1")
+        SendChatMessage(".typingsay 1")
     else
-        SendChatMessage(".mod st 0")
+        SendChatMessage(".typingsay 0")
     end
 end
 
@@ -204,7 +204,7 @@ end
 function CloseNotePad()
     ChatNotepadFrame:Hide()
     if (isTalkBtn:GetChecked()) then
-        SendChatMessage(".mod st 0")
+        SendChatMessage(".typingsay 0")
     end
 end
 
