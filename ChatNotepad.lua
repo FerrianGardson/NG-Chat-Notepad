@@ -184,9 +184,11 @@ end ]]
 
 function Talk()
     if (isTalkBtn:GetChecked()) then
+        SendChatMessage(".mod st 1")
         SendChatMessage(".typingsay 1")
     else
         SendChatMessage(".typingsay 0")
+        SendChatMessage(".mod st 0")
     end
 end
 
