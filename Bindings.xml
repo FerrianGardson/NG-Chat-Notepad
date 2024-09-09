@@ -1,5 +1,5 @@
 <Bindings>
-    <Binding name="ToggleChatNotepad" header="CHATNOTEPAD" key="[">
+    <Binding name="ToggleChatNotepad" header="CHATNOTEPAD" key="F1">
         ToggleNotePad()
     </Binding>
 </Bindings>

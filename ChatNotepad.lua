@@ -7,6 +7,8 @@
  @    @.   @@@   @@  (@      ,@     @@      @@    @@*  .@       @.    @@       @
  
 --]] -- Основное окно 1234
+_G["BINDING_HEADER_CHATNOTEPAD"] = "ChatNotePad"
+
 local ChatNotepadFrame = CreateFrame("Frame", "ChatNotepadFrame", UIParent)
 ChatNotepadFrame:SetSize(400, 400)
 ChatNotepadFrame:SetPoint("CENTER", 0, 0)
@@ -117,6 +119,7 @@ end)
 -- ESC
 
 local function EditBoxClearFocus()
+    TalkStart()
     TextField.ScrollFrame.EditBox:ClearFocus()
     local selectedValue = ChatNotepadFrameDropDownMenu.selectedValue
     CloseNotePad()
@@ -173,7 +176,7 @@ end)
 
 -- Talk
 
---[[ function Talk()
+--[[ function TalkStart()
     local selectedValue = ChatNotepadFrameDropDownMenu.selectedValue
     if (selectedValue == "SAY") then
         SendChatMessage(".mod st 1")
@@ -182,13 +185,57 @@ end)
     end
 end ]]
 
-function Talk()
-    if (isTalkBtn:GetChecked()) then
+-- Объявляем глобальную переменную
+TalkAnimation = true
+TalkBuff = true
+
+function TalkStart()
+    if TalkAnimation then
         SendChatMessage(".mod st 1")
+    end
+    if TalkBuff then
+        SendChatMessage(".typingsay 1")
+    end
+end
+
+function TalkEnd()
+    if TalkAnimation then
+        SendChatMessage(".mod st 0")
+    end
+    if TalkBuff then
+        SendChatMessage(".typingsay 0")
+    end
+end
+
+-- Функция для переключения состояния TalkAnimation
+function ToggleTalkAnimation()
+    if isTalkBtn:GetChecked() then
+        -- Включаем TalkAnimation
+        TalkAnimation = true
+    else
+        -- Выключаем TalkAnimation
+        TalkAnimation = false
+    end
+
+    -- Вызываем функцию Talk для выполнения действий на основе состояния
+    if TalkAnimation then
+        SendChatMessage(".mod st 1")
+    else
+        SendChatMessage(".mod st 0")
+    end
+end
+
+-- Функция для переключения состояния TalkBuff
+
+function ToggleTalkBuff()
+    if isBuffBtn:GetChecked() then
+        -- Если чекбокс включен, устанавливаем TalkBuff в true
+        TalkBuff = true
         SendChatMessage(".typingsay 1")
     else
+        -- Если чекбокс выключен, устанавливаем TalkBuff в false
+        TalkBuff = false
         SendChatMessage(".typingsay 0")
-        SendChatMessage(".mod st 0")
     end
 end
 
@@ -199,15 +246,13 @@ function ToggleNotePad()
         CloseNotePad()
     else
         ChatNotepadFrame:Show()
-        Talk()
+        TalkStart()
     end
 end
 
 function CloseNotePad()
     ChatNotepadFrame:Hide()
-    if (isTalkBtn:GetChecked()) then
-        SendChatMessage(".typingsay 0")
-    end
+    TalkEnd()
 end
 
 -- Точконатор
@@ -235,7 +280,24 @@ isTalkText:SetText("Речь")
 isTalkText:SetJustifyH("LEFT")
 
 isTalkBtn:SetScript("OnClick", function(self)
-    Talk()
+    ToggleTalkAnimation()
+end)
+
+-- Бафф речи
+
+local isBuffBtn = CreateFrame("CheckButton", "isBuffBtn", ChatNotepadFrame, "ChatConfigCheckButtonTemplate")
+isBuffBtn:SetChecked()
+isBuffBtn:SetPoint("LEFT", isTalkBtn, "RIGHT", 40, 0)
+isBuffBtn:SetHitRectInsets(5, 5, 5, 5)
+
+local isBuffText = isBuffBtn:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
+isBuffText:SetPoint("LEFT", isBuffBtn, "RIGHT", 0, 0)
+isBuffText:SetFont("Fonts\\FRIZQT__.TTF", 15, "OUTLINE")
+isBuffText:SetText("Бафф")
+isBuffText:SetJustifyH("LEFT")
+
+isBuffBtn:SetScript("OnClick", function(self)
+    ToggleTalkBuff()
 end)
 
 -- Список
@@ -272,7 +334,7 @@ function ChatNotepadFrameDropDownMenu_OnClick(self)
             item.checked = false
         end
     end
-    Talk()
+    TalkStart()
     ChatNotepadFrame_OnDropDownClick(self.value)
 end
 
